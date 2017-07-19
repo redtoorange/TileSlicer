@@ -18,24 +18,27 @@
 
 package tileslicer;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextField;
 
-public class Main extends Application {
+/**
+ * TextEditNumberFilter.java - Description
+ *
+ * @author Andrew McGuiness
+ * @version 7/18/2017
+ */
+public class TextEditNumberFilter implements ChangeListener<String> {
+    private TextField controlled;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("tileSlicer.fxml"));
-        primaryStage.setTitle("Tile Slicer");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+    public TextEditNumberFilter( TextField controlled){
+        this.controlled = controlled;
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
+    @Override
+    public void changed( ObservableValue< ? extends String > observable, String oldValue, String newValue ) {
+        if (!newValue.matches("\\d*")) {
+            controlled.setText(newValue.replaceAll("[^\\d]", ""));
+        }
     }
 }
