@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
@@ -20,6 +22,8 @@ import java.io.*;
  * @version 7/18/2017
  */
 public class SlicerController {
+    @FXML
+    ImageView imagePreview;
     @FXML
     Button cutButton, fileChooserButton;
     @FXML
@@ -44,16 +48,8 @@ public class SlicerController {
         outsideMarginText.textProperty().addListener( new NumericOnly( outsideMarginText ) );
         insideMarginText.textProperty().addListener( new NumericOnly( insideMarginText ) );
 
-        fileChooserButton.addEventHandler( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( ){
-            @Override
-            public void handle( MouseEvent event ) {
-                File f = chooser.showOpenDialog( null );
-                if( f != null && f.exists()){
-                    fileChooserText.setText( f.getName() );
-                    selectedFile = f;
-                }
-            }
-        });
+        fileChooserButton.addEventHandler( MouseEvent.MOUSE_PRESSED, new FileLoadHandler());
+        imagePreview.addEventHandler( MouseEvent.MOUSE_PRESSED, new FileLoadHandler());
 
         cutButton.addEventHandler( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( ){
             @Override
@@ -128,6 +124,34 @@ public class SlicerController {
         }
 
         Toolkit.getDefaultToolkit().beep();
-        new Alert( Alert.AlertType.CONFIRMATION, "Operation Complete!" ).show();
+
+
+        try {
+            Runtime.getRuntime().exec( "explorer " + folder );
+        }
+        catch(Exception e){
+
+        }
+    }
+
+    private class FileLoadHandler implements EventHandler<MouseEvent>{
+        @Override
+        public void handle( MouseEvent event ) {
+            if( selectedFile != null ){
+                chooser.setInitialDirectory( selectedFile.getParentFile() );
+            }
+
+            File f = chooser.showOpenDialog( null );
+            if( f != null && f.exists()){
+                fileChooserText.setText( f.getName() );
+                selectedFile = f;
+                try {
+                    imagePreview.setImage( new Image( new FileInputStream( selectedFile ) ) );
+                }
+                catch(Exception e){
+
+                }
+            }
+        }
     }
 }
