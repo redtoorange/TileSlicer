@@ -24,5 +24,5 @@ a nice clean padding.
 
 #### Installation
 
-Download and compile the thing yourself or download a handy binary [here]( www.andrewmcguiness.com/SpritePuncher.jar ).
+Download and compile the thing yourself or download a handy binary [here]( http://www.andrewmcguiness.com/SpritePuncher.jar ).
 
