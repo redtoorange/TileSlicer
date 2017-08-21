@@ -16,75 +16,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package tileslicer;
+package spritepuncher;
 
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * SlicerController.java - Description
  *
  * @author Andrew McGuiness
- * @version 7/18/2017
+ * @version 8/21/2017
  */
 public class SlicerController {
-    @FXML
-    ImageView imagePreview;
-    @FXML
-    Button cutButton, fileChooserButton;
-    @FXML
-    TextField tileHeightText, tileWidthText, outsideMarginText, insideMarginText, fileChooserText, tilePrefixText;
-
-    private FileChooser chooser;
+    private TextField tileHeightText, tileWidthText, outsideMarginText, insideMarginText, tilePrefixText;
     private File selectedFile;
-
     private int tileHeight, tileWidth, outsideMargin, insideMargin;
 
-    @FXML public void initialize(){
-        chooser = new FileChooser();
-        chooser.setTitle( "Select Spritesheet" );
-        chooser.getExtensionFilters().addAll(
-          new FileChooser.ExtensionFilter( "Image File", "*.png", "*.jpg", "*.JPG" )
-        );
+    public SlicerController( TextField tileWidthText, TextField tileHeightText, TextField outsideMarginText, TextField insideMarginText, TextField tilePrefixText ) {
+        this.tileWidthText = tileWidthText;
+        this.tileHeightText = tileHeightText;
+        this.outsideMarginText = outsideMarginText;
+        this.insideMarginText = insideMarginText;
 
-        fileChooserText.setDisable( true );
+        this.tilePrefixText = tilePrefixText;
 
-        tileHeightText.textProperty().addListener( new TextEditNumberFilter( tileHeightText ) );
-        tileWidthText.textProperty().addListener( new TextEditNumberFilter( tileWidthText ) );
-        outsideMarginText.textProperty().addListener( new TextEditNumberFilter( outsideMarginText ) );
-        insideMarginText.textProperty().addListener( new TextEditNumberFilter( insideMarginText ) );
-
-        fileChooserButton.addEventHandler( MouseEvent.MOUSE_PRESSED, new FileLoadHandler());
-        imagePreview.addEventHandler( MouseEvent.MOUSE_PRESSED, new FileLoadHandler());
-
-        cutButton.addEventHandler( MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>( ){
-            @Override
-            public void handle( MouseEvent event ) {
-                if( selectedFile != null && selectedFile.exists()){
-                    loadImage( );
-                }
-                else{
-                    new Alert( Alert.AlertType.ERROR, "Please select a file." ).show();
-                }
-            }
-        });
+        this.tileHeightText.textProperty().addListener( new TextEditNumberFilter( tileHeightText ) );
+        this.tileWidthText.textProperty().addListener( new TextEditNumberFilter( tileWidthText ) );
+        this.outsideMarginText.textProperty().addListener( new TextEditNumberFilter( outsideMarginText ) );
+        this.insideMarginText.textProperty().addListener( new TextEditNumberFilter( insideMarginText ) );
     }
 
-
-
-    private void loadImage( ){
+    public void loadImage( File selectedFile ){
+        this.selectedFile = selectedFile;
         try {
             BufferedImage img = ImageIO.read( selectedFile );
 
@@ -149,27 +120,6 @@ public class SlicerController {
         }
         catch(Exception e){
 
-        }
-    }
-
-    private class FileLoadHandler implements EventHandler<MouseEvent>{
-        @Override
-        public void handle( MouseEvent event ) {
-            if( selectedFile != null ){
-                chooser.setInitialDirectory( selectedFile.getParentFile() );
-            }
-
-            File f = chooser.showOpenDialog( null );
-            if( f != null && f.exists()){
-                fileChooserText.setText( f.getName() );
-                selectedFile = f;
-                try {
-                    imagePreview.setImage( new Image( new FileInputStream( selectedFile ) ) );
-                }
-                catch(Exception e){
-
-                }
-            }
         }
     }
 }

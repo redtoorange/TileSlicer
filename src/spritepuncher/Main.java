@@ -16,7 +16,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package tileslicer;
+package spritepuncher;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +28,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("tileSlicer.fxml"));
-        primaryStage.setTitle("Tile Slicer");
+        Parent root = FXMLLoader.load(getClass().getResource( "spritePuncher.fxml" ));
+        primaryStage.setTitle("SpritePuncher");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

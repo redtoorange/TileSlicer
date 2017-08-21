@@ -16,7 +16,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package tileslicer;
+package spritepuncher;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
